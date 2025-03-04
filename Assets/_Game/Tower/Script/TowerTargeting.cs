@@ -1,17 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class TowerTargeting : MonoBehaviour
 {
-    [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private Transform model;
     private TowerController _towerController;
     private IStatManager _statManager;
-    private float _atkRange;
     private readonly List<EnemyController> _enemiesInRange = new List<EnemyController>();
     private EnemyController _currentTarget;
+    private Tween _rotateModel;
 
     public void Init(TowerController towerController, IStatManager statManager)
     {
@@ -20,19 +20,24 @@ public class TowerTargeting : MonoBehaviour
         SubscribeEvents();
     }
 
-    private void OnDestroy()
-    {
-        UnsubscribeEvents();
-    }
-
     private void SubscribeEvents()
     {
         _statManager.OnStatChanged += UpdateAttackValue;
+        _towerController.OnTowerDie += UnsubscribeEvents;
     }
 
     private void UnsubscribeEvents()
     {
+        _currentTarget = null;
+        DOTween.Kill(_rotateModel);
         _statManager.OnStatChanged -= UpdateAttackValue;
+        _towerController.OnTowerDie -= UnsubscribeEvents;
+    }
+
+    public void StartLevel()
+    {
+        var atkRange = _statManager.StatValue(StatType.AttackRange, _statManager.StatLevelIngame[StatType.AttackRange]);
+        transform.localScale = Vector3.one * atkRange / 50f;
     }
 
     private void UpdateAttackValue(StatType type, float value)
@@ -40,16 +45,11 @@ public class TowerTargeting : MonoBehaviour
         switch (type)
         {
             case StatType.AttackRange:
-                _atkRange = value;
+                transform.DOScale(value / 50f, 0.1f);
                 break;
         }
     }
-
-    private void Update()
-    {
-        RotateTowardsTarget();
-    }
-
+    
     private void OnTriggerEnter(Collider other)
     {
         var enemy = other.GetComponent<EnemyController>();
@@ -72,7 +72,7 @@ public class TowerTargeting : MonoBehaviour
         if (_currentTarget == null)
         {
             _currentTarget = GetClosestTarget();
-            _towerController.InvokeFoundTarget(_currentTarget);
+            RotateTowardsTarget();
         }
     }
 
@@ -106,7 +106,13 @@ public class TowerTargeting : MonoBehaviour
         if (direction != Vector3.zero)
         {
             Quaternion desiredRotation = Quaternion.LookRotation(direction);
-            model.rotation = Quaternion.Slerp(model.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
+            _rotateModel = model.DORotateQuaternion(desiredRotation, 0.5f)
+                .OnComplete(() => _towerController.InvokeFoundTarget(_currentTarget))
+                .OnUpdate(() =>
+                {
+                    if (_currentTarget == null || !_currentTarget.IsAlive)
+                        DOTween.Kill(_rotateModel);
+                });
         }
     }
 }

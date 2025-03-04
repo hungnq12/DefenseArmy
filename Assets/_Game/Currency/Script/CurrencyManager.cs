@@ -6,7 +6,7 @@ using UnityEngine;
 public interface ICurrencyManager
 {
     Dictionary<CurrencyType, int> CurrencyValue { get; }
-    event Action<CurrencyType> OnCurrencyChanged;
+    event Action<CurrencyType, int> OnCurrencyChanged;
     void AddCurrency(CurrencyType currencyType, int amount);
     bool IsEnough(CurrencyType currencyType, int amount);
 }
@@ -18,12 +18,12 @@ public enum CurrencyType
 public class CurrencyManager : MonoBehaviour, ICurrencyManager
 {
     public Dictionary<CurrencyType, int> CurrencyValue { get; } = new();
-    public event Action<CurrencyType> OnCurrencyChanged;
+    public event Action<CurrencyType, int> OnCurrencyChanged;
     public void AddCurrency(CurrencyType currencyType, int amount)
     {
         CurrencyValue[currencyType] += amount;
         PlayerPrefs.SetInt(currencyType.ToString(), CurrencyValue[currencyType]);
-        OnCurrencyChanged?.Invoke(currencyType);
+        OnCurrencyChanged?.Invoke(currencyType, CurrencyValue[currencyType]);
     }
     public bool IsEnough(CurrencyType currencyType, int amount) => CurrencyValue[currencyType] >= amount;
 
@@ -31,7 +31,8 @@ public class CurrencyManager : MonoBehaviour, ICurrencyManager
     {
         for (int i = 0; i < Enum.GetValues(typeof(CurrencyType)).Length; i++)
         {
-            CurrencyValue[(CurrencyType)i] = PlayerPrefs.GetInt($"{(CurrencyType)i}", 0);
+            if (i == (int)CurrencyType.Silver) CurrencyValue[(CurrencyType)i] = 0;
+            else CurrencyValue[(CurrencyType)i] = PlayerPrefs.GetInt($"{(CurrencyType)i}", 0);
         }
     }
 }

@@ -9,17 +9,26 @@ public class TowerData : ScriptableObject
 {
     [SerializeField] private List<StatData> statDatas;
     public List<StatConfig> StatConfigs(StatType type) => statDatas[(int)type].statConfigs;
+    public float StatValue(StatType type, int level) => StatConfigs(type)[level].value;
+    
+    /*#if UNITY_EDITOR
+    [Button]
+    private void UpdateConfig()
+    {
+        
+    }
+    #endif*/
 }
 
 [Serializable]
-public class StatData
+public struct StatData
 {
     public StatType statType;
     public List<StatConfig> statConfigs;
 }
 
 [Serializable]
-public class StatConfig
+public struct StatConfig
 {
     public float value;
     public int price;

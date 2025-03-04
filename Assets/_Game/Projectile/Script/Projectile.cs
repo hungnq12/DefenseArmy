@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : IPoolable
+public class Projectile : Poolable
 {
     [SerializeField] private float speed;
-    [SerializeField] private GameObject explosionEffect;
     private float _damage;
     private Vector3 _forwardDirection;
     
@@ -16,7 +15,7 @@ public class Projectile : IPoolable
         transform.position = spawnPos;
         transform.rotation = Quaternion.LookRotation(_forwardDirection);
         
-        Invoke(nameof(Return), 2f);
+        Invoke(nameof(ReturnToPool), 2f);
     }
 
     private void Update()
@@ -30,12 +29,9 @@ public class Projectile : IPoolable
         if (enemy != null) 
         {
             enemy.InvokeEnemyTakeDamage(_damage);
-            Return();
+            ReturnToPool();
         }
     }
-
-    private void Return()
-    {
-        PoolManager.Instance.ReturnObject(this);
-    }
+    
+    void ReturnToPool() => PoolManager.Instance.ReturnObject(this);
 }

@@ -8,26 +8,27 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] private NavMeshAgent agent;
     private EnemyController _enemyController;
     private Transform _target;
-    public void Init(EnemyController enemyController, Transform target)
+    public void Init(EnemyController enemyController, Transform target, float moveSpeed)
     {
         _enemyController = enemyController;
         _target = target;
+        agent.speed = moveSpeed;
         SubscribeEvents();
     }
 
     private void SubscribeEvents()
     {
-        _enemyController.OnStateChanged += MoveToTarget;
+        _enemyController.OnStateChanged += HandleChangeState;
         _enemyController.OnEnemyDie += UnsubscribeEvents;
     }
 
     private void UnsubscribeEvents(EnemyController _)
     {
-        _enemyController.OnStateChanged -= MoveToTarget;
+        _enemyController.OnStateChanged -= HandleChangeState;
         _enemyController.OnEnemyDie -= UnsubscribeEvents;
     }
 
-    private void MoveToTarget(EnemyState state)
+    private void HandleChangeState(EnemyState state)
     {
         switch (state)
         {

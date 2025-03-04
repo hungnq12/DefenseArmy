@@ -5,9 +5,10 @@ using UnityEngine;
 
 public interface IStatManager
 {
+    TowerData TowerData { get; }
     Dictionary<StatType, int> StatLevel { get; }
     Dictionary<StatType, int> StatLevelIngame { get; }
-    TowerData TowerData { get; }
+    float StatValue(StatType type, int level);
     event Action<StatType, float> OnStatChanged;
     void UpgradeStat(StatType type);
 }
@@ -17,6 +18,7 @@ public class StatManager : MonoBehaviour, IStatManager
     public TowerData TowerData => towerData;
     public Dictionary<StatType, int> StatLevel { get; } = new();
     public Dictionary<StatType, int> StatLevelIngame { get; } = new();
+    public float StatValue(StatType type, int level) => towerData.StatValue(type, level);
 
     public event Action<StatType, float> OnStatChanged;
 
@@ -31,7 +33,7 @@ public class StatManager : MonoBehaviour, IStatManager
     public void UpgradeStat(StatType type)
     {
         StatLevelIngame[type]++;
-        var newStatValue = TowerData.StatConfigs(type)[StatLevelIngame[type]].value;
+        var newStatValue = StatValue(type, StatLevelIngame[type]);
         OnStatChanged?.Invoke(type, newStatValue);
     }
 }

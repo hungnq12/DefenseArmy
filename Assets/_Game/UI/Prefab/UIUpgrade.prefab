@@ -382,6 +382,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statItemPrefab: {fileID: 897146279416784880, guid: d559777de87e77c4eb102782e030248b, type: 3}
   statItemParent: {fileID: 2135608000516415944}
+  tab1: 000000000100000002000000
 --- !u!1 &8096092597660743352
 GameObject:
   m_ObjectHideFlags: 0

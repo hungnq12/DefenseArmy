@@ -12,12 +12,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Application.targetFrameRate = 60;
         currencyManager.Init();
         statManager.Init();
         towerController.Init(statManager);
         waveManager.Init(currencyManager, towerController.transform);
-        uiManager.Init(statManager, currencyManager);
+        levelManager.Init(waveManager, towerController);
+        uiManager.Init(statManager, currencyManager, waveManager, towerController);
         
-        waveManager.StartWave();
+        levelManager.StartLevel();
     }
 }

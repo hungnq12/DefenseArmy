@@ -6,13 +6,12 @@ using UnityEngine;
 public class EnemyTargeting : MonoBehaviour
 {
     [SerializeField] private SphereCollider collider;
-    [SerializeField] private float _atkRange;
     private EnemyController _enemyController;
 
-    public void Init(EnemyController enemyController)
+    public void Init(EnemyController enemyController, float range)
     {
         _enemyController = enemyController;
-        collider.radius = _atkRange;
+        collider.radius = range * 0.5f;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -21,6 +20,7 @@ public class EnemyTargeting : MonoBehaviour
         if (tower != null)
         {
             _enemyController.InvokeStateChanged(EnemyState.Attack);
+            _enemyController.InvokeFoundTarget(tower);
         }
     }
 
@@ -30,6 +30,7 @@ public class EnemyTargeting : MonoBehaviour
         if (tower != null)
         {
             _enemyController.InvokeStateChanged(EnemyState.Move);
+            _enemyController.InvokeFoundTarget(null);
         }
     }
 }

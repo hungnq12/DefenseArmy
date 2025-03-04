@@ -273,8 +273,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgradeBgSprites:
-  - {fileID: 21300000, guid: 8030270a400f0e94592082b330e4c38b, type: 3}
   - {fileID: 21300000, guid: 6d1bce42ec1ddc140a347d5ddd7c0489, type: 3}
+  - {fileID: 21300000, guid: 8030270a400f0e94592082b330e4c38b, type: 3}
   statNameTxt: {fileID: 633017901590099372}
   currentValueTxt: {fileID: 8476895666734171624}
   nextValueTxt: {fileID: 8664867093092142091}
@@ -1183,7 +1183,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8028482911436530309
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1201,8 +1201,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -138.3, y: 0}
-  m_SizeDelta: {x: 214, y: 170.69}
+  m_AnchoredPosition: {x: -138.3, y: -3.8239}
+  m_SizeDelta: {x: 214, y: 178.3378}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8953139026229341639
 CanvasRenderer:

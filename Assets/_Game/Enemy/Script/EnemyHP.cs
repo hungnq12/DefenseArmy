@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class EnemyHP : MonoBehaviour
 {
+    [SerializeField] private DamageTextVFX damageTextVFXPrefab;
     private EnemyController _enemyController;
     private float _currentHP;
-    [SerializeField] private float _maxHP;
     public bool IsAlive => _currentHP > 0;
 
-    public void Init(EnemyController enemyController)
+    public void Init(EnemyController enemyController, float hp)
     {
         _enemyController = enemyController;
-        _currentHP = _maxHP;
+        _currentHP = hp;
         SubscribeEvents();
     }
 
@@ -33,7 +33,11 @@ public class EnemyHP : MonoBehaviour
         _currentHP -= damage;
         if (_currentHP <= 0)
         {
+            _enemyController.InvokeStateChanged(EnemyState.Die);
             _enemyController.InvokeEnemyDie();
         }
+        
+        var vfx = PoolManager.Instance.GetObject(damageTextVFXPrefab, isUI: true);
+        vfx.Show(damage, Camera.main.WorldToScreenPoint(transform.position));
     }
 }

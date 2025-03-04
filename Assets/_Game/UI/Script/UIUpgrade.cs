@@ -7,8 +7,8 @@ public class UIUpgrade : MonoBehaviour
 {
     [SerializeField] private UIUpgradeStatItem statItemPrefab;
     [SerializeField] private Transform statItemParent;
+    [SerializeField] private List<StatType> tab1;
     private List<UIUpgradeStatItem> statItems = new List<UIUpgradeStatItem>();
-    private StatType _currentStatType;
     private IStatManager _statManager;
     private ICurrencyManager _currencyManager;
 
@@ -19,25 +19,17 @@ public class UIUpgrade : MonoBehaviour
 
         OnChangeTabStat(0);
     }
-    private void ShowStat(StatType statType)
+    
+    public void OnChangeTabStat(int tabID)
     {
         foreach (var statItem in statItems) PoolManager.Instance.ReturnObject(statItem);
         statItems.Clear();
         
-        switch (statType)
-        {
-            case StatType.Attack:
-                for (int i = 0; i < Enum.GetValues(typeof(StatType)).Length; i++)
-                { 
-                    var statItem = PoolManager.Instance.GetObject(statItemPrefab, statItemParent);
-                    statItem.Init(_statManager, (StatType)i, _currencyManager);
-                    statItems.Add(statItem);
-                }
-                break;
+        foreach (var type in tab1)
+        { 
+            var statItem = PoolManager.Instance.GetObject(statItemPrefab, statItemParent);
+            statItem.Init(_statManager, type, _currencyManager);
+            statItems.Add(statItem);
         }
-    }
-    public void OnChangeTabStat(int statTypeID)
-    {
-        ShowStat((StatType)statTypeID);
     }
 }

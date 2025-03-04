@@ -11,24 +11,21 @@ public class TowerAnimation : MonoBehaviour
         _towerController = towerController;
         SubscribeEvents();
     }
-
-    private void OnDestroy()
-    {
-        UnsubscribeEvents();
-    }
-
+    
     private void SubscribeEvents()
     {
-        _towerController.OnTowerAttack += PlayAttackAnimation;
+        _towerController.OnStateChanged += PlayAnimation;
+        _towerController.OnTowerDie += UnsubscribeEvents;
     }
 
     private void UnsubscribeEvents()
     {
-        _towerController.OnTowerAttack -= PlayAttackAnimation;
+        _towerController.OnStateChanged -= PlayAnimation;
+        _towerController.OnTowerDie -= UnsubscribeEvents;
     }
 
-    private void PlayAttackAnimation(float _)
+    private void PlayAnimation(TowerState state)
     {
-        animator.Play(TowerState.Attack.ToString());
+        animator.Play(state.ToString());
     }
 }

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 803f3cf4fb736ab4eb1c4b5418c98630, type: 3}
+  m_Name: LevelData
+  m_EditorClassIdentifier: 
+  levels:
+  - waves:
+    - waveID: 0
+      miniWaves:
+      - enemyID: 0
+        count: 5
+        spawnDelay: 0
+      - enemyID: 1
+        count: 2
+        spawnDelay: 1
+    - waveID: 1
+      miniWaves:
+      - enemyID: 0
+        count: 2
+        spawnDelay: 0
+      - enemyID: 1
+        count: 3
+        spawnDelay: 1
+      - enemyID: 2
+        count: 1
+        spawnDelay: 1

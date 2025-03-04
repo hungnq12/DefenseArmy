@@ -6,6 +6,7 @@ using UnityEngine;
 public class TowerAttack : MonoBehaviour
 {
     [SerializeField] private Projectile projectilePrefab;
+    [SerializeField] private ParticlePoolable gunMuzzlePrefab;
     [SerializeField] private Transform shootPos;
     private TowerController _towerController;
     private IStatManager _statManager;
@@ -20,24 +21,28 @@ public class TowerAttack : MonoBehaviour
         _statManager = statManager;
         SubscribeEvents();
     }
-
-    private void OnDestroy()
-    {
-        UnsubscribeEvents();
-    }
-
+    
     private void SubscribeEvents()
     {
         _statManager.OnStatChanged += UpdateAttackValue;
         _towerController.OnFoundTarget += UpdateTarget;
+        _towerController.OnTowerDie += UnsubscribeEvents;
     }
 
     private void UnsubscribeEvents()
     {
+        _currentTarget = null;
         _statManager.OnStatChanged -= UpdateAttackValue;
         _towerController.OnFoundTarget -= UpdateTarget;
+        _towerController.OnTowerDie -= UnsubscribeEvents;
     }
 
+    public void StartLevel()
+    {
+        _atk = _statManager.StatValue(StatType.Attack, _statManager.StatLevelIngame[StatType.Attack]);
+        _atkSpd = _statManager.StatValue(StatType.AttackSpeed, _statManager.StatLevelIngame[StatType.AttackSpeed]);
+    }
+    
     private void UpdateAttackValue(StatType type, float value)
     {
         switch (type)
@@ -63,9 +68,8 @@ public class TowerAttack : MonoBehaviour
 
     private void Aim()
     {
-        if (_currentTarget == null) return;
         _shootTimer += Time.deltaTime * _atkSpd;
-        if (_shootTimer >= 1f)
+        if (_currentTarget != null && _currentTarget.IsAlive && _shootTimer >= 1f)
         {
             _shootTimer = 0f;
             Shoot();
@@ -74,9 +78,11 @@ public class TowerAttack : MonoBehaviour
 
     private void Shoot()
     {
-        if (!_currentTarget.IsAlive) return;
-        _towerController.InvokeTowerAttack(_atk);
+        _towerController.InvokeStateChanged(TowerState.Attack);
         var projectile = PoolManager.Instance.GetObject(projectilePrefab);
         projectile.Shoot(_atk, shootPos.position, shootPos.forward.normalized);
+
+        var muzzle = PoolManager.Instance.GetObject(gunMuzzlePrefab);
+        muzzle.Show(shootPos.position, shootPos.forward.normalized, Vector3.one * 0.25f);
     }
 }
