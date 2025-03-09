@@ -8,10 +8,12 @@ public class LevelManager : MonoBehaviour
 {
     private IWaveManager _waveManager;
     private TowerController _towerController;
-    public void Init(IWaveManager waveManager, TowerController towerController)
+    private CameraManager _cameraManager;
+    public void Init(IWaveManager waveManager, TowerController towerController, CameraManager cameraManager)
     {
         _waveManager = waveManager;
         _towerController = towerController;
+        _cameraManager = cameraManager;
 
         _waveManager.OnKilledAllWave += SuccessEnd;
         _towerController.OnTowerDie += FailEnd;
@@ -27,6 +29,7 @@ public class LevelManager : MonoBehaviour
     {
         _towerController.StartLevel();
         _waveManager.StartSpawn();
+        _cameraManager.StartLevel();
     }
 
     private void SuccessEnd() => EndLevel(true);

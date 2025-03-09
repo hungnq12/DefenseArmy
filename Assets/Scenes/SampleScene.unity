@@ -361,6 +361,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &726562238
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 726562240}
+  - component: {fileID: 726562239}
+  m_Layer: 0
+  m_Name: CameraManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &726562239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726562238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09e3c74a60d0b484ea4b01fef7ce434b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 5
+--- !u!4 &726562240
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726562238}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 963194228}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &733303930
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,12 +628,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.6427876, y: 0, z: 0, w: 0.7660445}
+  m_LocalRotation: {x: 0.6427876, y: -0, z: -0, w: 0.7660445}
   m_LocalPosition: {x: 0, y: 7.5, z: -3.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 726562240}
   m_LocalEulerAnglesHint: {x: 80, y: 0, z: 0}
 --- !u!224 &979022662 stripped
 RectTransform:
@@ -875,6 +921,10 @@ PrefabInstance:
       propertyPath: levelManager
       value: 
       objectReference: {fileID: 458322436}
+    - target: {fileID: 821941455600956889, guid: cd93e191ecd9bc14a8b7261a8a00b6ed, type: 3}
+      propertyPath: cameraManager
+      value: 
+      objectReference: {fileID: 726562239}
     - target: {fileID: 821941455600956889, guid: cd93e191ecd9bc14a8b7261a8a00b6ed, type: 3}
       propertyPath: currencyManager
       value: 
@@ -1532,7 +1582,6 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 1922862941449086705}
   - {fileID: 1836105409}
@@ -1545,3 +1594,4 @@ SceneRoots:
   - {fileID: 733303933}
   - {fileID: 1667974466956718447}
   - {fileID: 7201675952585529868}
+  - {fileID: 726562240}

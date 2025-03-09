@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private StatManager statManager;
     [SerializeField] private TowerController towerController;
     [SerializeField] private UIManager uiManager;
+    [SerializeField] private CameraManager cameraManager;
 
     private void Start()
     {
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour
         statManager.Init();
         towerController.Init(statManager);
         waveManager.Init(currencyManager, towerController.transform);
-        levelManager.Init(waveManager, towerController);
+        levelManager.Init(waveManager, towerController, cameraManager);
         uiManager.Init(statManager, currencyManager, waveManager, towerController);
         
         levelManager.StartLevel();
